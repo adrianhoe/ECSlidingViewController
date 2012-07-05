@@ -155,6 +155,10 @@ typedef enum {
 
 - (void)manuallyAddGestureRecognizerToViewController:(UIViewController *)ViewControllerWithGesture;
 
+/* This method makes the ECSlidingViewController responsible for seting the shadow for each view. Opacity, radius and color can be specified in the setTopViewController method*/
+
+- (void)addShadowsToView:(UIViewController *)viewController withOpacity:(float)opacity radius:(float)radius andColor:(UIColor *)color;
+
 /** Slides the top view in the direction of the specified side.
  
  A peek amount or reveal amount must be set for the given side. The top view will anchor to one of those specified values.

@@ -7,6 +7,8 @@
 //
 
 #import "ECSlidingViewController.h"
+#import <UIKit/UIKit.h>
+
 
 NSString *const ECSlidingViewUnderRightWillAppear = @"ECSlidingViewUnderRightWillAppear";
 NSString *const ECSlidingViewUnderLeftWillAppear  = @"ECSlidingViewUnderLeftWillAppear";
@@ -105,7 +107,9 @@ NSString *const ECSlidingViewTopDidReset          = @"ECSlidingViewTopDidReset";
   [_topViewController.view setFrame:self.view.bounds];
   _topViewController.view.layer.shadowOffset = CGSizeZero;
   _topViewController.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.view.layer.bounds].CGPath;
-  
+   
+  [self addShadowsToView:_topViewController withOpacity:0.75f radius:10.0f andColor:[UIColor blackColor]];
+
   [self.view addSubview:_topViewController.view];
   
   [self resetGestureToPreviousGestureArea];
@@ -305,6 +309,14 @@ NSString *const ECSlidingViewTopDidReset          = @"ECSlidingViewTopDidReset";
   [ViewControllerWithGesture.view addGestureRecognizer:self.panGesture];
   topViewHasManuallySetGestureRecognizer = TRUE;
 }
+
+- (void)addShadowsToView:(UIViewController *)viewController withOpacity:(float)opacity radius:(float)radius andColor:(UIColor *)color 
+{   
+    viewController.view.layer.shadowOpacity = opacity;
+    viewController.view.layer.shadowRadius = radius;
+    viewController.view.layer.shadowColor = color.CGColor;
+}
+    
 
 - (void)anchorTopViewTo:(ECSide)side
 {
