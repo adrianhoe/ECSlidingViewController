@@ -574,6 +574,10 @@ NSString *const ECSlidingViewTopDidReset          = @"ECSlidingViewTopDidReset";
   _underLeftShowing   = NO;
   _underRightShowing  = NO;
   _topViewIsOffScreen = NO;
+
+    self.underLeftView.hidden = YES;
+    self.underRightView.hidden = YES;
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
 }
 
 - (BOOL)topViewHasFocus
