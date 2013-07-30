@@ -20,6 +20,7 @@ NSString *const ECSlidingViewTopDidReset          = @"ECSlidingViewTopDidReset";
 
 @property (nonatomic, strong) UIView *topViewSnapshot;
 @property (nonatomic, unsafe_unretained) CGFloat initialTouchPositionX;
+@property (nonatomic, unsafe_unretained) CGFloat initialTouchPositionY;
 @property (nonatomic, unsafe_unretained) CGFloat initialHoizontalCenter;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 @property (nonatomic, strong) UITapGestureRecognizer *resetTapGesture;
@@ -254,18 +255,21 @@ NSString *const ECSlidingViewTopDidReset          = @"ECSlidingViewTopDidReset";
     
   CGPoint currentTouchPoint     = [recognizer locationInView:self.view];
   CGFloat currentTouchPositionX = currentTouchPoint.x;
+  CGFloat currentTouchPositionY = currentTouchPoint.y;
   
   if (recognizer.state == UIGestureRecognizerStateBegan) {
     self.initialTouchPositionX = currentTouchPositionX;
+    self.initialTouchPositionY = currentTouchPositionY;
     self.initialHoizontalCenter = self.topView.center.x;
   } else if (recognizer.state == UIGestureRecognizerStateChanged) {
     CGFloat panAmount = self.initialTouchPositionX - currentTouchPositionX;
+    CGFloat panAmountY = self.initialTouchPositionY - currentTouchPositionY;
     CGFloat newCenterPosition = self.initialHoizontalCenter - panAmount;
     
     if ((newCenterPosition < self.resettedCenter && self.anchorLeftTopViewCenter == NSNotFound) || (newCenterPosition > self.resettedCenter && self.anchorRightTopViewCenter == NSNotFound)) {
       newCenterPosition = self.resettedCenter;
     }
-    
+
     [self topViewHorizontalCenterWillChange:newCenterPosition];
     [self updateTopViewHorizontalCenter:newCenterPosition];
     [self topViewHorizontalCenterDidChange:newCenterPosition];
@@ -273,6 +277,12 @@ NSString *const ECSlidingViewTopDidReset          = @"ECSlidingViewTopDidReset";
     CGPoint currentVelocityPoint = [recognizer velocityInView:self.view];
     CGFloat currentVelocityX     = currentVelocityPoint.x;
     
+    CGFloat panAmount = self.initialTouchPositionX - currentTouchPositionX;
+    CGFloat panAmountY = self.initialTouchPositionY - currentTouchPositionY;
+      
+    [self pannedInXAxis:panAmount
+                  yAxis:panAmountY];
+      
     if ([self underLeftShowing] && currentVelocityX > 100) {
       [self anchorTopViewTo:ECRight];
     } else if ([self underRightShowing] && currentVelocityX < 100) {

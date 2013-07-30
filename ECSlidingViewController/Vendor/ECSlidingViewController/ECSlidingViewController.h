@@ -210,6 +210,9 @@ typedef enum {
 /** Returns true if the top view is completely off the screen */
 - (BOOL)topViewIsOffScreen;
 
+/** Called when navigation bar is panned down or up */
+- (void)pannedInXAxis:(CGFloat)panAmmountX
+                yAxis:(CGFloat)panAmmountY;
 
 @end
 
